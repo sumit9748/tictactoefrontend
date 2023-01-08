@@ -38,7 +38,7 @@ const Games = () => {
         <Card cardDetails={g} />
       ))}
 
-      {games ? (
+      {games.length > 0 ? (
         <button
           className="newGameButton"
           onClick={() => history.push("/newGame")}
