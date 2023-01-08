@@ -34,11 +34,11 @@ const Games = () => {
   return (
     <div className="game">
       <Header info={"Your Games"} />
-      {games.map((g) => (
+      {games?.map((g) => (
         <Card cardDetails={g} />
       ))}
 
-      {games.length > 0 ? (
+      {games?.length > 0 ? (
         <button
           className="newGameButton"
           onClick={() => history.push("/newGame")}
