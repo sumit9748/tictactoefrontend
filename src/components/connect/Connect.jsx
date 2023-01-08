@@ -56,7 +56,7 @@ const Connect = () => {
       <button onClick={connect}>Start Game</button>
       {board && (
         <Link to={{ pathname: "/games", state: board }}>
-          <button>Go to Board</button>
+          <button className="prevBtn"> Go to Board</button>
         </Link>
       )}
     </div>

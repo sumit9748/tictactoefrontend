@@ -14,9 +14,10 @@ const Games = () => {
   const [err, setErr] = useState("");
 
   const history = useHistory();
+
   useEffect(() => {
     newGame();
-  }, [currentUser]);
+  }, []);
 
   const newGame = async () => {
     try {

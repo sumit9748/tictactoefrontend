@@ -61,6 +61,7 @@ const Board = () => {
   }, [currentUser, friendId]);
   // console.log(friendId);
 
+  //set my moves
   useEffect(() => {
     board?.status !== true &&
       setOp(
@@ -91,11 +92,7 @@ const Board = () => {
           : "Its a draw"
       );
   }, [playerboard, board]);
-
-  //whenEver boardTurns this should maintain
-
-  //its gives me hint other player move
-
+  //when ever a new entry comes
   useEffect(() => {
     if (mess !== null) {
       board.boardStatus[mess.num].userId = mess?.sender;
@@ -275,7 +272,9 @@ const Board = () => {
               />
             </div>
           ))}
-          <button onClick={() => saveMatch()}>Back to games</button>
+          <button className="goBack" onClick={() => saveMatch()}>
+            Back to games
+          </button>
         </div>
       ) : (
         <h1>Game Over</h1>

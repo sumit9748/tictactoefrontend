@@ -32,3 +32,11 @@
   margin: 5px 0px;
   width: 87%;
 }
+.goBack {
+  background: black;
+  color: white;
+  border-radius: 10p 2px 10px 2px;
+  border: 1px solid gray;
+  height: 50px;
+  margin: 5px 0px;
+}
