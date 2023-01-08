@@ -45,13 +45,13 @@ const Card = ({ cardDetails }) => {
       ) : (
         <>
           {cardDetails?.type == 3 && (
-            <p style={{ margin: "0px 0px" }}>Its a draw match</p>
+            <p style={{ margin: "5px 0px" }}>Its a draw match</p>
           )}
-          {cardDetails?.type == 2 && (
-            <p style={{ margin: "0px 0px" }}>Other player won</p>
-          )}
-          {cardDetails?.type == 1 && (
-            <p style={{ margin: "0px 0px" }}>You Win </p>
+          {cardDetails?.type == 2 &&
+          cardDetails?.lastMove === currentUser.username ? (
+            <p style={{ margin: "5px 0px" }}>You win</p>
+          ) : (
+            <p style={{ margin: "5px 0px" }}>Other player win win</p>
           )}
 
           <Link
