@@ -1,0 +1,34 @@
+.box {
+  width: 327.88px;
+  height: 381.47px;
+  background: #ffe79e;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.col {
+  background-color: #fff;
+  width: 105.09px;
+  height: 115.09px;
+  margin: 0px 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.boardDetector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px 16px 16px;
+  justify-content: center;
+  /* Smoke Grey */
+
+  background: rgb(233, 233, 71);
+  color: black;
+  border-radius: 8px;
+  border: 1px solid gray;
+  height: 50px;
+  margin: 5px 0px;
+  width: 87%;
+}

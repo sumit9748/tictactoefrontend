@@ -1,0 +1,54 @@
+.home {
+  position: relative;
+  width: 360px;
+  height: 720px;
+
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.home > h1 {
+  width: 156px;
+  font-family: "Bilbo Swash Caps", cursive;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 90px;
+  line-height: 90px;
+  text-align: center;
+
+  color: #000000;
+}
+.home > h3 {
+  width: 53px;
+  position: absolute;
+  top: 10%;
+  left: 45%;
+  font-family: "Bilbo Swash Caps", cursive;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+
+  color: #000000;
+}
+.login {
+  height: 56px;
+  width: 90%;
+  background: #f2c94c;
+
+  box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
+  margin: 10px 0px;
+}
+.register {
+  height: 56px;
+  width: 90%;
+
+  background: #2f80ed;
+
+  box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
+}
