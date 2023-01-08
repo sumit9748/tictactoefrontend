@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { axiosInstance } from "../config";
 
 export const AuthContext = createContext();
 
@@ -10,10 +11,7 @@ export const AuthContextProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("user")) || null
   );
   const login = async (inputs) => {
-    const res = await axios.post(
-      "http://localhost:8000/connect/auth/login",
-      inputs
-    );
+    const res = await axiosInstance.post(`/auth/login`, inputs);
 
     setCurrentUser(res.data);
   };
