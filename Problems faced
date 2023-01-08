@@ -1,4 +1,0 @@
-Main problems I faced during build this applications are:
-Make it asynchronous where both player can make their move at same time. later i reliaze that i have to make a real time
-conversation between two players about the board status and how and who places the bit last. so is use "Socket Io" to acheive this . Another problem is to
-make the board updated at every instance of time whenver users places the bit.
