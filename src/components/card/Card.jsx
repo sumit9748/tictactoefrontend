@@ -22,19 +22,49 @@ const Card = ({ cardDetails }) => {
   return (
     <div className="card">
       <h2>Game with {friend.name}</h2>
-      {cardDetails.lastMove === currentUser?.username ? (
-        <p style={{ margin: "0px 0px" }}>Its their Move</p>
+      {!cardDetails.status ? (
+        <>
+          {cardDetails.lastMove === currentUser?.username ? (
+            <p style={{ margin: "0px 0px" }}>Its their Move</p>
+          ) : (
+            <p style={{ margin: "0px 0px" }}>its your turn to play now</p>
+          )}
+          <p>
+            <Moment format="YYYY-MM-DD HH:mm">{cardDetails.updatedAt}</Moment>
+          </p>
+          <Link
+            to={{
+              pathname: "/board",
+              state: cardDetails._id,
+              friend: friend._id,
+            }}
+          >
+            <button className="playYear">Play</button>
+          </Link>
+        </>
       ) : (
-        <p style={{ margin: "0px 0px" }}>its your turn to play now</p>
+        <>
+          {cardDetails?.type == 3 && (
+            <p style={{ margin: "0px 0px" }}>Its a draw match</p>
+          )}
+          {cardDetails?.type == 2 && (
+            <p style={{ margin: "0px 0px" }}>Other player won</p>
+          )}
+          {cardDetails?.type == 1 && (
+            <p style={{ margin: "0px 0px" }}>You Win </p>
+          )}
+
+          <Link
+            to={{
+              pathname: "/board",
+              state: cardDetails._id,
+              friend: friend._id,
+            }}
+          >
+            <button className="playYear">View Details</button>
+          </Link>
+        </>
       )}
-      <p>
-        <Moment format="YYYY-MM-DD HH:mm">{cardDetails.updatedAt}</Moment>
-      </p>
-      <Link
-        to={{ pathname: "/board", state: cardDetails._id, friend: friend._id }}
-      >
-        <button className="playYear">Play</button>
-      </Link>
     </div>
   );
 };
