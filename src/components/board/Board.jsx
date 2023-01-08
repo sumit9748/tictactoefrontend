@@ -48,9 +48,11 @@ const Board = () => {
 
   useEffect(() => {
     const getBoard = async () => {
-      const res = await axiosInstance.get(`/board/boardSp/${location.state}`);
-      setPlayerboard(res.data.boardStatus);
-      setBoard(res.data);
+      try {
+        const res = await axiosInstance.get(`/board/boardSp/${location.state}`);
+        setPlayerboard(res.data.boardStatus);
+        setBoard(res.data);
+      } catch (err) {}
     };
     getBoard();
   }, [friendId, currentUser, board]);
@@ -215,7 +217,7 @@ const Board = () => {
       board.type = 2;
       declareWinner("true");
     }
-    if (board.fill >= 9) {
+    if (board.fill >= 9 && !colCheck() && !rowCheck() && !diagonalCheck()) {
       board.status = true;
       board.type = 3;
       declareWinner("false");
