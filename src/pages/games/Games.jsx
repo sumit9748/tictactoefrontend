@@ -9,7 +9,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { axiosInstance } from "../../config";
 import { useHistory } from "react-router";
 const Games = () => {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, newBoard } = useContext(AuthContext);
   const [games, setGames] = useState([]);
   const [err, setErr] = useState("");
 
@@ -17,7 +17,7 @@ const Games = () => {
 
   useEffect(() => {
     newGame();
-  }, []);
+  }, [newBoard]);
 
   const newGame = async () => {
     try {

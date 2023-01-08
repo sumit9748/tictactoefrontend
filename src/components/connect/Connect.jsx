@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 const Connect = () => {
   const [email, setEmail] = useState("");
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, setNewBoard } = useContext(AuthContext);
   const [err, setErr] = useState(null);
   const [board, setBoard] = useState(null);
 
@@ -32,6 +32,7 @@ const Connect = () => {
       });
       setBoard(res.data._id);
       setErr("Board successfully created");
+      setNewBoard((prev) => !prev);
     } catch (err) {
       console.log(err);
       setErr(err.response.data);

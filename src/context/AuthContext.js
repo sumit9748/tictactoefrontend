@@ -7,9 +7,11 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const history = useHistory();
+
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );
+  const [newBoard, setNewBoard] = useState(false);
   const login = async (inputs) => {
     const res = await axiosInstance.post(`/auth/login`, inputs);
 
@@ -25,7 +27,7 @@ export const AuthContextProvider = ({ children }) => {
   }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout }}>
+    <AuthContext.Provider value={{ currentUser, login, logout, setNewBoard }}>
       {children}
     </AuthContext.Provider>
   );
