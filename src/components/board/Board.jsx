@@ -197,13 +197,13 @@ const Board = () => {
   };
 
   const declareWinner = (text) => {
-    text === "true"
-      ? setWin(
-          board?.lastMove === currentUser.username
-            ? "You Win"
-            : "Other player won"
-        )
-      : setWin("Its a draw");
+    text === "true" &&
+      setWin(
+        board?.lastMove === currentUser.username
+          ? "You Win"
+          : "Other player won"
+      );
+    text === "false" && setWin("Its a draw");
 
     updateBoard();
   };
