@@ -1,0 +1,9 @@
+1.Just go through the link the game started autometically.If you want to clone the game repo on your device
+
+Frontend:-
+=>git clone https://github.com/sumit9748/tictactoefrontend.git
+Backend:-
+=>https://github.com/sumit9748/tictactoebackend.git
+
+After clone the repo type npm install to install all the necessery library like express mongoose dotenv socket.io etc for frontend
+Same for the frontend also.
