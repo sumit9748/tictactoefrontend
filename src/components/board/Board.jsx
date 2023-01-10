@@ -15,7 +15,7 @@ const Board = () => {
   const socket = useRef();
 
   const [board, setBoard] = useState(null);
-  const fren = location.friend;
+
   const [turn, setTurn] = useState(false);
   const [friendId, setFriendId] = useState(null);
   const [op, setOp] = useState("");
@@ -40,7 +40,7 @@ const Board = () => {
   useEffect(() => {
     const getFriend = async () => {
       try {
-        const res2 = await axiosInstance.get(`/auth/${fren}`);
+        const res2 = await axiosInstance.get(`/auth/${location.friend}`);
         setFriendId(res2.data);
       } catch (err) {}
     };
