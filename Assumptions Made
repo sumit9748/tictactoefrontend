@@ -1,0 +1,6 @@
+I made several assumptions like
+1. when the game ends i think it is better to show only the results instead of showing the board.
+2. some login and logout buttons to move here and there.
+3. I also try to make the logic more faster by adding some extra parameters into my board schema like fill and status.
+4. if some user is logged in he/she must have shown main menu
+5. after registering user should landed onto login page
