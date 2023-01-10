@@ -280,7 +280,7 @@ const Board = () => {
           </button>
         </div>
       ) : (
-        <Viewboard board={board} friendId={friendId?._id} />
+        <Viewboard playerboard={playerboard} friendId={friendId?._id} />
       )}
     </div>
   );
