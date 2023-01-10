@@ -56,7 +56,7 @@ const Board = () => {
       } catch (err) {}
     };
     getBoard();
-  }, [friendId, currentUser, board]);
+  }, [friendId, board]);
 
   useEffect(() => {
     socket.current.emit("addUser", currentUser._id);
@@ -174,7 +174,6 @@ const Board = () => {
         board?.board.boardStatus[i].userId !== ""
       ) {
         ans = true;
-        break;
       }
     }
 
@@ -241,6 +240,8 @@ const Board = () => {
     } catch (err) {}
   };
 
+  // console.log(friendId);
+
   return (
     <div>
       <Header info={`Game with ${friendId?.name}`} />
@@ -280,8 +281,8 @@ const Board = () => {
           </button>
         </div>
       ) : (
-        // <Viewboard board={playerboard} friendId={friendId?._id} />
-        <h1>Game Over</h1>
+        <Viewboard board={playerboard} friendId={friendId?._id} />
+        // <h1>Game Over</h1>
       )}
     </div>
   );

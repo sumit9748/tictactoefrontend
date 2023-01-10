@@ -18,7 +18,7 @@ const Square = ({ element, id, handleClick, friendId }) => {
     } else if (element === friendId) {
       setPush(
         <CircleOutlinedIcon
-          style={{ color: "red", fontWeight: "700", fontSize: "70px" }}
+          style={{ color: "red", fontWeight: "bold", fontSize: "70px" }}
         />
       );
     }

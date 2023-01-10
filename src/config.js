@@ -1,5 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://tictactoebaackend.onrender.com/connect",
+  baseURL: "http://localhost:8000/connect"
+    ? "http://localhost:8000/connect"
+    : "https://tictactoebaackend.onrender.com/connect",
 });
