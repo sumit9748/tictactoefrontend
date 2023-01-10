@@ -8,6 +8,7 @@ import Header from "../header/Header";
 import Square from "../square/Square";
 import "./board.css";
 import { io } from "socket.io-client";
+import Viewboard from "../../viewboard/Viewboard";
 const Board = () => {
   const { currentUser } = useContext(AuthContext);
   const location = useLocation();
@@ -279,7 +280,7 @@ const Board = () => {
           </button>
         </div>
       ) : (
-        <h1>Game Over</h1>
+        <Viewboard board={board} friendId={friendId?._id} />
       )}
     </div>
   );
