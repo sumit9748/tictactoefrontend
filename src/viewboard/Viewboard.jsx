@@ -6,7 +6,7 @@ const Viewboard = ({ board, friendId }) => {
     <div className="box">
       {board.map((bo) => (
         <div className="col">
-          <Square element={board?.userId} friendId={friendId} />
+          <Square element={bo?.userId} friendId={friendId} />
         </div>
       ))}
     </div>
