@@ -27,7 +27,6 @@ const Board = () => {
   useEffect(() => {
     socket.current = io("ws://localhost:8000");
     socket.current.on("getText", (data) => {
-      console.log("call hochhena");
       setMess({
         sender: data.senderId,
         num: data.num,
@@ -35,7 +34,6 @@ const Board = () => {
       });
     });
   }, []);
-  // console.log(mess);
   //first run
   useEffect(() => {
     const getFriend = async () => {
@@ -45,7 +43,7 @@ const Board = () => {
       } catch (err) {}
     };
     getFriend();
-  }, [currentUser]);
+  }, [currentUser, location]);
 
   useEffect(() => {
     const getBoard = async () => {
@@ -56,7 +54,7 @@ const Board = () => {
       } catch (err) {}
     };
     getBoard();
-  }, [friendId, board]);
+  }, [friendId, board, location]);
 
   useEffect(() => {
     socket.current.emit("addUser", currentUser._id);
@@ -103,7 +101,6 @@ const Board = () => {
       board.lastMove = mess.lastMove;
 
       setPlayerboard(board.boardStatus);
-      setBoard(board);
     }
   }, [mess]);
 
@@ -211,7 +208,6 @@ const Board = () => {
   };
 
   const checkWin = () => {
-    console.log("checkWin called");
     if (colCheck() || rowCheck() || diagonalCheck()) {
       board.status = true;
       board.type = 2;
