@@ -5,66 +5,74 @@ import { AuthContext } from "../../context/AuthContext";
 import CloseIcon from "@mui/icons-material/Close";
 
 import Header from "../header/Header";
-import Square from "../square/Square";
 import "./board.css";
 import { io } from "socket.io-client";
-import Viewboard from "../../viewboard/Viewboard";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import TictactoeBoard from "./TictactoeBoard";
 const Board = () => {
   const { currentUser } = useContext(AuthContext);
   const location = useLocation();
   const socket = useRef();
-
-  const [board, setBoard] = useState(null);
+  const queryClient = useQueryClient();
 
   const [turn, setTurn] = useState(false);
-  const [friendId, setFriendId] = useState(null);
+
   const [op, setOp] = useState("");
   const [win, setWin] = useState("");
   const [mess, setMess] = useState(null);
   const [playerboard, setPlayerboard] = useState(null);
+  const [friendId, setFriendId] = useState({});
 
-  //find friend
   useEffect(() => {
+    // console.log(1);
     socket.current = io("ws://localhost:8000");
+    socket.current.emit("addUser", currentUser._id);
+
     socket.current.on("getText", (data) => {
       setMess({
         sender: data.senderId,
         num: data.num,
         lastMove: data.lastMove,
+        fill: data.fill,
+        status: data.status,
       });
     });
   }, []);
+
   //first run
-  useEffect(() => {
-    const getFriend = async () => {
-      try {
-        const res2 = await axiosInstance.get(`/auth/${location.friend}`);
-        setFriendId(res2.data);
-      } catch (err) {}
-    };
-    getFriend();
-  }, [currentUser, location]);
+
+  const {
+    isLoading,
+    error,
+    data: board,
+  } = useQuery(["board"], () =>
+    axiosInstance.get(`/board/boardSp/${location.state}`).then((res) => {
+      // console.log(3);
+
+      setPlayerboard(res.data.boardStatus);
+      return res.data;
+    })
+  );
 
   useEffect(() => {
-    const getBoard = async () => {
-      try {
-        const res = await axiosInstance.get(`/board/boardSp/${location.state}`);
-        setPlayerboard(res.data.boardStatus);
-        setBoard(res.data);
-      } catch (err) {}
-    };
-    getBoard();
-  }, [friendId, board, location]);
+    const fr = board?.users.filter((id) => id !== currentUser._id);
+    // console.log(fr[0]);
+    // console.log(4);
 
-  useEffect(() => {
-    socket.current.emit("addUser", currentUser._id);
-    socket.current.emit("addUser", friendId?._id);
-  }, [currentUser, friendId]);
-  // console.log(friendId);
+    const getUser = async () => {
+      try {
+        const res = await axiosInstance.get(`/auth/${fr[0]}`);
+        setFriendId(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getUser();
+  }, []);
 
   //set my moves
   useEffect(() => {
-    board?.status !== true &&
+    board?.status === false &&
       setOp(
         board?.lastMove !== ""
           ? board?.lastMove !== currentUser.username
@@ -74,7 +82,7 @@ const Board = () => {
           ? "Its your move"
           : "Its other move"
       );
-    board?.status !== true &&
+    board?.status === false &&
       setTurn(
         board?.lastMove !== ""
           ? board?.lastMove === currentUser.username
@@ -92,38 +100,34 @@ const Board = () => {
             : "Other player won"
           : "Its a draw"
       );
-  }, [playerboard, board]);
+  }, [board, playerboard]);
   //when ever a new entry comes
   useEffect(() => {
+    // console.log(5);
     if (mess !== null) {
       board.boardStatus[mess.num].userId = mess?.sender;
       board.boardStatus[mess.num].filled = true;
       board.lastMove = mess.lastMove;
+      board.fill = mess.fill;
+      board.status = mess.status;
 
       setPlayerboard(board.boardStatus);
     }
   }, [mess]);
 
-  //it updates the board whenever a change locks
+  //it updates the board whenever a change locks.
 
-  const updateBoard = async () => {
-    await axiosInstance
-      .put(`/board/${board._id}`, {
-        boardStatus: board.boardStatus,
-        status: board.status,
-        lastMove: board.lastMove,
-        fill: board.fill,
-        type: board.type,
-      })
-      .then(async () => {
-        await axiosInstance.get(`/board/boardSp/${board._id}`).then((res) => {
-          setPlayerboard(res.data.boardStatus);
-          setBoard(res.data);
-        });
-      });
-  };
-  // console.log(board);
-  // console.log(playerboard);
+  const updateBoard = useMutation(
+    (bordAll) => {
+      return axiosInstance.put(`/board/${board._id}`, bordAll);
+    },
+    {
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries(["board"]);
+      },
+    }
+  );
 
   const handleClick = (id) => {
     if (!board.boardStatus[id].filled && turn === true) {
@@ -132,17 +136,31 @@ const Board = () => {
       board.lastMove = currentUser.username;
       board.status = false;
       board.fill = board.fill + 1;
-      board.type = board.type;
+      board.type = 1;
 
+      let m = checkWin();
+      if (m == 1) {
+        board.status = true;
+        board.type = 2;
+      } else if (m == 2) {
+        board.status = true;
+        board.type = 3;
+      }
       socket.current.emit("sendText", {
         senderId: currentUser._id,
         receiverId: friendId._id,
         num: id,
         lastMove: currentUser.username,
+        fill: board.fill,
+        status: board.status,
       });
-
-      updateBoard();
-      board.fill >= 3 && checkWin();
+      updateBoard.mutate({
+        boardStatus: board.boardStatus,
+        status: board.status,
+        lastMove: board.lastMove,
+        fill: board.fill,
+        type: board.type,
+      });
     }
   };
 
@@ -151,9 +169,9 @@ const Board = () => {
 
     for (let i = 0; i < 3; i++) {
       if (
-        board.boardStatus[i].userId === board.boardStatus[i + 3].userId &&
-        board.boardStatus[i].userId === board.boardStatus[i + 6].userId &&
-        board.boardStatus[i].userId !== ""
+        board?.boardStatus[i].userId === board?.boardStatus[i + 3].userId &&
+        board?.boardStatus[i].userId === board?.boardStatus[i + 6].userId &&
+        board?.boardStatus[i].userId !== ""
       ) {
         ans = true;
         break;
@@ -166,9 +184,9 @@ const Board = () => {
 
     for (let i = 0; i < 9; i += 3) {
       if (
-        board?.boardStatus[i]?.userId === board?.boardStatus[i + 1]?.userId &&
-        board?.boardStatus[i]?.userId === board?.boardStatus[i + 2]?.userId &&
-        board?.board.boardStatus[i].userId !== ""
+        board?.boardStatus[i].userId === board?.boardStatus[i + 1].userId &&
+        board?.boardStatus[i].userId === board?.boardStatus[i + 2].userId &&
+        board?.boardStatus[i].userId !== ""
       ) {
         ans = true;
       }
@@ -195,90 +213,68 @@ const Board = () => {
     return ans;
   };
 
-  const declareWinner = (text) => {
-    text === "true" &&
-      setWin(
-        board?.lastMove === currentUser.username
-          ? "You Win"
-          : "Other player won"
-      );
-    text === "false" && setWin("Its a draw");
-
-    updateBoard();
-  };
-
   const checkWin = () => {
-    if (colCheck() || rowCheck() || diagonalCheck()) {
-      board.status = true;
-      board.type = 2;
-      declareWinner("true");
-    }
-    if (board.fill >= 9 && !colCheck() && !rowCheck() && !diagonalCheck()) {
-      board.status = true;
-      board.type = 3;
-      declareWinner("false");
-    }
-    return;
-  };
-  const saveMatch = async () => {
-    try {
-      const data = {
-        boardStatus: board.boardStatus,
-        status: board.status,
-        lastMove: board.lastMove,
-        fill: board.fill,
-        type: board.type,
-      };
-
-      await axiosInstance.put(`/board/${board._id}`, {
-        data,
-      });
-    } catch (err) {}
+    console.log(board);
+    var col = colCheck();
+    var row = rowCheck();
+    var dia = diagonalCheck();
+    if (col || row || dia) {
+      return 1;
+    } else if (board?.fill >= 9 && !col && !row && !dia) {
+      return 2;
+    } else return 3;
   };
 
-  // console.log(friendId);
+  const saveMatch = () => {
+    const boardAll = {
+      boardStatus: board.boardStatus,
+      status: board.status,
+      lastMove: board.lastMove,
+      fill: board.fill,
+      type: board.type,
+    };
+
+    updateBoard.mutate(boardAll);
+  };
 
   return (
     <div>
-      <Header info={`Game with ${friendId?.name}`} />
-      <p>Your Piece</p>
-      <div
-        style={{
-          display: "flex",
-          width: "105.09px",
-          height: "105.09px",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <CloseIcon
-          style={{ color: "blue", fontWeight: "bold", fontSize: "70px" }}
-        />
-      </div>
-      <div className="boardDetector">
-        <p style={{ fontSize: "20px", fontWeight: "bold" }}>
-          {win !== "" ? win : op}
-        </p>
-      </div>
-      {board?.status === false ? (
-        <div className="box">
-          {playerboard?.map((board, id) => (
-            <div className="col">
-              <Square
-                element={board?.userId}
-                id={id}
-                handleClick={handleClick}
-                friendId={friendId?._id}
-              />
-            </div>
-          ))}
-          <button className="goBack" onClick={() => saveMatch()}>
-            Back to games
-          </button>
-        </div>
+      {friendId ? (
+        <>
+          <Header info={`Game with ${friendId?.name}`} />
+          <p>Your Piece</p>
+          <div
+            style={{
+              display: "flex",
+              width: "105.09px",
+              height: "105.09px",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <CloseIcon
+              style={{ color: "blue", fontWeight: "bold", fontSize: "70px" }}
+            />
+          </div>
+          <div className="boardDetector">
+            <p style={{ fontSize: "20px", fontWeight: "bold" }}>
+              {win !== "" ? win : op}
+            </p>
+          </div>
+          {isLoading && friendId ? (
+            "Loading the board"
+          ) : (
+            <TictactoeBoard
+              board={board}
+              friendId={friendId}
+              handleClick={handleClick}
+              playerboard={playerboard}
+              saveMatch={saveMatch}
+            />
+          )}
+        </>
       ) : (
-        <Viewboard board={playerboard} friendId={friendId?._id} />
-        // <h1>Game Over</h1>
+        "loading"
       )}
     </div>
   );

@@ -4,12 +4,17 @@ import App from "./App";
 
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 import { AuthContextProvider } from "./context/AuthContext";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 
-if (process.env.NODE_ENV === "production") disableReactDevTools();
+const queryClient = new QueryClient();
+
+// if (process.env.NODE_ENV === "production") disableReactDevTools();
 
 ReactDOM.render(
-  <AuthContextProvider>
-    <App />
-  </AuthContextProvider>,
+  <QueryClientProvider client={queryClient}>
+    <AuthContextProvider>
+      <App />
+    </AuthContextProvider>
+  </QueryClientProvider>,
   document.getElementById("root")
 );

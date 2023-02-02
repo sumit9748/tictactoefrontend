@@ -20,8 +20,8 @@ const Login = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      await login(inputs);
-      history.push("/games");
+      await login(inputs, setErr);
+      err !== "" && history.push("/games");
     } catch (err) {
       console.log(err);
     }

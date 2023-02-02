@@ -18,11 +18,7 @@ const Connect = () => {
       const res = await axiosInstance.get(`/auth/getuser/${email}`);
       console.log(res);
       callUser(res.data._id);
-    } catch (err) {
-      console.log(err);
-
-      // setErr(err.response.data);
-    }
+    } catch (err) {}
   };
   const callUser = async (id) => {
     try {
@@ -37,7 +33,6 @@ const Connect = () => {
       setErr(err.response.data);
     }
   };
-  console.log(board);
 
   return (
     <div className="connect">

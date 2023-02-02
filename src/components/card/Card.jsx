@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const Card = ({ cardDetails }) => {
   const { currentUser } = useContext(AuthContext);
   const [friend, setFriend] = useState([]);
+  const [tu, setTu] = useState("");
 
   const findFriend = async (friendId) => {
     try {
@@ -14,6 +15,18 @@ const Card = ({ cardDetails }) => {
       setFriend(res.data);
     } catch (err) {}
   };
+
+  useEffect(() => {
+    setTu(
+      cardDetails?.lastMove !== ""
+        ? cardDetails?.lastMove !== currentUser.username
+          ? "Its your move"
+          : "Its other move"
+        : cardDetails?.users[0] === currentUser._id
+        ? "Its your move"
+        : "Its other move"
+    );
+  }, []);
 
   useEffect(() => {
     const friendId = cardDetails.users.filter((id) => id !== currentUser?._id);
@@ -24,13 +37,9 @@ const Card = ({ cardDetails }) => {
       <h2>Game with {friend.name}</h2>
       {!cardDetails.status ? (
         <>
-          {cardDetails.lastMove === currentUser?.username ? (
-            <p style={{ margin: "0px 0px" }}>Its their Move</p>
-          ) : (
-            <p style={{ margin: "0px 0px" }}>its your turn to play now</p>
-          )}
           <p>
             <Moment format="YYYY-MM-DD HH:mm">{cardDetails.updatedAt}</Moment>
+            <p>{tu}</p>
           </p>
           <Link
             to={{
@@ -44,14 +53,12 @@ const Card = ({ cardDetails }) => {
         </>
       ) : (
         <>
-          {cardDetails?.type == 3 && (
+          {cardDetails?.type == 3 ? (
             <p style={{ margin: "5px 0px" }}>Its a draw match</p>
-          )}
-          {cardDetails?.type == 2 &&
-          cardDetails?.lastMove === currentUser.username ? (
+          ) : cardDetails?.lastMove === currentUser.username ? (
             <p style={{ margin: "5px 0px" }}>You win</p>
           ) : (
-            <p style={{ margin: "5px 0px" }}>Other player win win</p>
+            <p style={{ margin: "5px 0px" }}>Other player win</p>
           )}
 
           <Link

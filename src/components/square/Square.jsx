@@ -8,6 +8,8 @@ const Square = ({ element, id, handleClick, friendId }) => {
   const [push, setPush] = useState(null);
   const { currentUser } = useContext(AuthContext);
 
+  // console.log(id);
+
   useEffect(() => {
     if (element === currentUser?._id) {
       setPush(
@@ -28,11 +30,12 @@ const Square = ({ element, id, handleClick, friendId }) => {
     <div
       style={{
         display: "flex",
-        width: "105.09px",
-        height: "105.09px",
+        width: "105px",
+        height: "100px",
         alignItems: "center",
         justifyContent: "center",
         cursor: element === friendId ? "none" : "pointer",
+        margin: "1px 1px",
       }}
       onClick={() => handleClick(id)}
     >

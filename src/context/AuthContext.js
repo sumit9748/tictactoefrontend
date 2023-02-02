@@ -11,15 +11,18 @@ export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );
-  const login = async (inputs) => {
-    const res = await axiosInstance.post(`/auth/login`, inputs);
-
-    setCurrentUser(res.data);
+  const login = async (inputs, setErr) => {
+    try {
+      const res = await axiosInstance.post(`/auth/login`, inputs);
+      setCurrentUser(res.data);
+    } catch (err) {
+      setErr(err.response.data);
+    }
   };
 
   const logout = () => {
     localStorage.setItem("user", JSON.stringify(null));
-    history.pushState("/login");
+    history.push("/login");
   };
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));

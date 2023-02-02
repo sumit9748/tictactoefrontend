@@ -2,7 +2,6 @@ import React from "react";
 import Square from "../components/square/Square";
 
 const Viewboard = ({ board, friendId }) => {
-  console.log(friendId);
   return (
     <div className="box">
       {board?.map((bo) => (
