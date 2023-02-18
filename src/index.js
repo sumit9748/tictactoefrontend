@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 
 const queryClient = new QueryClient();
 
-// if (process.env.NODE_ENV === "production") disableReactDevTools();
+if (process.env.NODE_ENV === "production") disableReactDevTools();
 
 ReactDOM.render(
   <QueryClientProvider client={queryClient}>
