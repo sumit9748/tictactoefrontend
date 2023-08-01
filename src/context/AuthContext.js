@@ -1,12 +1,12 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+
 import { axiosInstance } from "../config";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const history = useHistory();
+
 
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
@@ -22,7 +22,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.setItem("user", JSON.stringify(null));
-    history.push("/login");
+    
   };
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));

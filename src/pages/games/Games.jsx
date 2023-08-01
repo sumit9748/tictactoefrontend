@@ -31,7 +31,7 @@ const Games = () => {
         })
       );
     } catch (err) {
-      setErr(err.response.data ? err.response.data : "Something is wrong");
+      setErr("Something is wrong");
     }
   };
   return (

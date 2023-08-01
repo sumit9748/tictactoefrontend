@@ -16,7 +16,7 @@ const Connect = () => {
   const connect = async () => {
     try {
       const res = await axiosInstance.get(`/auth/getuser/${email}`);
-      console.log(res);
+      
       callUser(res.data._id);
     } catch (err) {}
   };
