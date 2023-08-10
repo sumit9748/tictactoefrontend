@@ -29,7 +29,7 @@ const Board = () => {
 
   useEffect(() => {
     console.log(1);
-    socket.current = io("ws://localhost:8000");
+    socket.current = io("ws://https://tictactoebaackend.onrender.com");
     socket.current.emit("addUser", currentUser._id);
 
     socket.current.on("getText", (data) => {
