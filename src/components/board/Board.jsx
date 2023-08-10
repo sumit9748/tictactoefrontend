@@ -28,8 +28,8 @@ const Board = () => {
   const [friendId, setFriendId] = useState({});
 
   useEffect(() => {
-    console.log(1);
-    socket.current = io("https://tictactoebaackend.onrender.com");
+    
+    socket.current = io("https://tictactoebaackend.onrender.com/");
     socket.current.emit("addUser", currentUser._id);
 
     socket.current.on("getText", (data) => {
@@ -80,6 +80,8 @@ const Board = () => {
         const friend=await axiosInstance.get(`/auth/${fr[0]}`);
         
         setFriendId(friend?.data);
+        socket.current.emit("addUser", friend.data._id);
+
       }catch(err){}
     };
     
