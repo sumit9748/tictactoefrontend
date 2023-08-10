@@ -46,6 +46,9 @@ const Board = () => {
       }); 
     });
 
+    return () => {
+      socket.current.disconnect();
+    };
 
   }, []);
 
@@ -126,7 +129,6 @@ const Board = () => {
   useEffect(() => {
 
 
-console.log(mess);
     if (mess !== null) {
 
       const messUpdated={...board};
