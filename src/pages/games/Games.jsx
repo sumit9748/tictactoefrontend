@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { axiosInstance } from "../../config";
 import { useHistory } from "react-router";
+import Topbar from "../../components/topbar/Topbar";
 const Games = () => {
   const { currentUser } = useContext(AuthContext);
   const [games, setGames] = useState([]);
@@ -36,7 +37,7 @@ const Games = () => {
   };
   return (
     <div className="game">
-      <Header info={"Your Games"} />
+      <Topbar info={"Your Games"} />
       {games?.map((g) => (
         <Card cardDetails={g} />
       ))}
