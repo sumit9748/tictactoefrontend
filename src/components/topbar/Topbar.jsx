@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import HomeIcon from "@mui/icons-material/Home";
 
-const Topbar = ({}) => {
+const Topbar = ({ }) => {
   const history = useHistory();
   const { logout } = useContext(AuthContext);
   const { currentUser } = useContext(AuthContext);
@@ -23,7 +23,7 @@ const Topbar = ({}) => {
         style={{ color: "black", fontSize: "30px" }}
         onClick={() => history.push("/")}
       />
-      <PowerSettingsNewIcon onClick={() => logout()} />
+      <PowerSettingsNewIcon onClick={() => logout(history)} />
 
       <HomeIcon onClick={() => history.push("/games")} />
 
