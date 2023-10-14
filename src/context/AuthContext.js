@@ -1,10 +1,10 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { axiosInstance } from "../config";
 
 export const AuthContext = createContext();
-const navigate = useNavigate();
+const navigate = useHistory();
 
 export const AuthContextProvider = ({ children }) => {
 
@@ -23,7 +23,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.setItem("user", JSON.stringify(null));
-    navigate("/login")
+    navigate.push("/login")
 
   };
   useEffect(() => {
