@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import { createContext, useEffect, useState } from "react";
 
 import { axiosInstance } from "../config";
@@ -21,7 +21,7 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  const logout = ({ history }) => {
+  const logout = (history) => {
     localStorage.setItem("user", JSON.stringify(null));
     history.push("/login")
 

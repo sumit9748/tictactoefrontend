@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
+
 import { AuthContext } from "../../context/AuthContext";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import HomeIcon from "@mui/icons-material/Home";
